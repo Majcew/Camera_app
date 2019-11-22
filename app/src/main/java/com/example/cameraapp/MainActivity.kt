@@ -22,6 +22,7 @@ class MainActivity : AppCompatActivity() {
     private var lensLocation:CameraType? = null
     private var flashState:FlashState? = null
     private val path = ""
+    private var flag:Boolean? = null
 
     private val permissions = arrayOf(Manifest.permission.CAMERA,
         Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -31,9 +32,17 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        createCamera()
         lensLocation = CameraType.BACK
         flashState = FlashState.OFF
+
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        createCamera()
         fab_camera.setOnClickListener {
             takePhoto()
         }
@@ -44,21 +53,24 @@ class MainActivity : AppCompatActivity() {
         fab_flash.setOnClickListener {
             changeFlashState()
         }
-
+        camera?.start()
     }
-
-    /*override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-
-    }*/
     override fun onStart() {
         super.onStart()
         if (!hasPermissions()) {
             requestPermission()
-        }else{
+        }else {
+            createCamera()
+            fab_camera.setOnClickListener {
+                takePhoto()
+            }
+
+            fab_switch_camera.setOnClickListener {
+                switchCamera()
+            }
+            fab_flash.setOnClickListener {
+                changeFlashState()
+            }
             camera?.start()
         }
     }
