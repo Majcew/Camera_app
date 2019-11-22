@@ -51,8 +51,12 @@ class MainActivity : AppCompatActivity() {
         permissions: Array<out String>,
         grantResults: IntArray
     ) {
-        createCamera()
-        camera?.start()
+        if(hasPermissions()) {
+            createCamera()
+            camera?.start()
+        }
+        else
+            requestPermission()
     }
     override fun onStart() {
         super.onStart()
