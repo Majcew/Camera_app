@@ -2,8 +2,11 @@ package com.example.cameraapp
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Environment
+import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import io.fotoapparat.Fotoapparat
@@ -16,12 +19,14 @@ import io.fotoapparat.selector.off
 import io.fotoapparat.selector.torch
 import io.fotoapparat.view.CameraView
 import kotlinx.android.synthetic.main.activity_main.*
+import java.io.File
 
 class MainActivity : AppCompatActivity() {
     private var camera: Fotoapparat? = null
     private var lensLocation:CameraType? = null
     private var flashState:FlashState? = null
-    private val path = ""
+    //private val path = "/storage/emulated/0/cameraappphotos/"
+    //private val name:String = "cos.JPG"
 
     private val permissions = arrayOf(Manifest.permission.CAMERA,
         Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -64,16 +69,6 @@ class MainActivity : AppCompatActivity() {
             requestPermission()
         }else {
             createCamera()
-            fab_camera.setOnClickListener {
-                takePhoto()
-            }
-
-            fab_switch_camera.setOnClickListener {
-                switchCamera()
-            }
-            fab_flash.setOnClickListener {
-                changeFlashState()
-            }
             camera?.start()
         }
     }
@@ -105,9 +100,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun takePhoto() {
-        camera?.takePicture()
-        //val photo = camera?.takePicture()
-        //photo?.saveToFile(path)
+        val path = Environment.getExternalStorageDirectory()
+        val file = File(path,"dlawykladu.jpg")
+        camera?.takePicture()?.saveToFile(file)
     }
     //Funkcja sprawdzajaca, czy aplikacja posiada potrzebne pozwolenia do poprawnego działania
     private fun hasPermissions(): Boolean{
