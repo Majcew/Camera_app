@@ -5,10 +5,18 @@ dzięki której można w łatwy sposób stworzyc instancję oraz updatować atry
 
 ## Dodanie biblioteki do naszego projektu oraz pozwolenia
 
-Należy dodać odpowiedni dependency do `build.gratle`
+Należy dodać odpowiednie dependency do `build.gratle`
 ```groovy
 implementation 'io.fotoapparat:fotoapparat:2.7.0'
 ```
+Oraz poprosić o odpowiednie pozwolenia dla aplikacji
+```xml
+<!-- Poniższy kod należy dodać do pliku AndroidManifest.xml -->
+<uses-feature android:name="android.hardware.camera" android:required="true" />
+<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+```
+
 
 ```kotlin
 //Tworzy instancję o danych atrybutach
